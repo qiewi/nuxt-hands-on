@@ -1,6 +1,6 @@
 <template>
   <footer class="site-footer border-t border-slate-200">
-    <div class="footer-top bg-slate-100 py-4">
+    <div class="footer-top bg-[#FF6600] py-4">
       <div class="container">
         <div
           class="footer-content gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 lg:gap-8"

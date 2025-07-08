@@ -6,8 +6,8 @@ export default eventHandler(async () => {
   // Mock global data
   const mockGlobalData = {
     data: {
-      siteName: 'Demo Site',
-      siteDescription: 'This is a demo site with mock authentication',
+      siteName: 'Suitmedia',
+      siteDescription: 'Your trusted partner for digital transformation in Indonesia. We are a full-service agency specializing in technology and marketing solutions, including web design, mobile app development, and digital marketing.',
       siteLogo: {
         formats: {
           thumbnail: {
@@ -15,7 +15,7 @@ export default eventHandler(async () => {
           },
         },
       },
-      Copyrights: '2024 Demo Site. All rights reserved.',
+      Copyrights: '2025 Suitmedia. All rights reserved.',
       SocialMedia: [
         {
           id: 1,
