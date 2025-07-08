@@ -1,0 +1,78 @@
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html,
+button,
+input,
+select,
+textarea {
+  color: #000;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+  vertical-align: middle;
+}
+
+address {
+  font-style: normal;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+figure {
+  margin: 0 0 1em 0;
+}
+
+// label,
+// input,
+// button,
+// select,
+// textarea {
+//   font-family: $base_font_family;
+// }
+
+pre {
+  overflow: auto;
+}
+
+canvas {
+  vertical-align: middle;
+}
+
+input[type='search'] {
+  box-sizing: border-box;
+}
