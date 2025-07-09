@@ -12,7 +12,12 @@
       <div class="container mx-auto">
         <div class="mb-16 rounded-lg bg-gray-50 p-8 lg:p-12">
           <div class="grid items-center gap-12 lg:grid-cols-2">
-            <div>
+            <div
+              class="order-1 flex aspect-video items-center justify-center rounded-lg bg-gray-200 lg:order-2"
+            >
+              <span class="text-lg text-gray-500">Featured Article Image</span>
+            </div>
+            <div class="order-2 lg:order-1">
               <span
                 class="mb-4 inline-block rounded-full bg-[#FF6600] px-3 py-1 text-sm font-medium text-white"
               >
@@ -39,11 +44,6 @@
               >
                 Read Article
               </NuxtLink>
-            </div>
-            <div
-              class="flex aspect-video items-center justify-center rounded-lg bg-gray-200"
-            >
-              <span class="text-lg text-gray-500">Featured Article Image</span>
             </div>
           </div>
         </div>
@@ -295,33 +295,8 @@
       </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="bg-gray-50 px-6 py-20">
-      <div class="container mx-auto text-center">
-        <h2 class="mb-6 text-4xl font-bold text-gray-900">Stay Updated</h2>
-        <p class="mx-auto mb-8 max-w-2xl text-xl text-gray-600">
-          Subscribe to our newsletter and never miss our latest insights, tips,
-          and updates.
-        </p>
-
-        <form class="mx-auto flex max-w-md gap-4">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            class="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
-          />
-          <button
-            type="submit"
-            class="rounded-lg bg-[#FF6600] px-6 py-3 font-semibold whitespace-nowrap text-white transition-colors duration-300 hover:bg-[#e55a00]"
-          >
-            Subscribe
-          </button>
-        </form>
-      </div>
-    </section>
-
     <!-- CTA Section -->
-    <section class="px-6 py-20">
+    <section class="bg-gray-50 px-6 py-20">
       <div class="container mx-auto text-center">
         <h2 class="mb-6 text-4xl font-bold text-gray-900">
           Have a Project in Mind?
