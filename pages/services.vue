@@ -1,17 +1,11 @@
 <template>
   <main class="bg-white">
     <!-- Hero Section -->
-    <section class="px-6 pt-32 pb-20">
-      <div class="container mx-auto text-center">
-        <h1 class="mb-6 text-5xl font-bold text-gray-900 md:text-7xl">
-          Our Services
-        </h1>
-        <p class="mx-auto mb-12 max-w-3xl text-xl text-gray-600">
-          From concept to launch, we provide comprehensive digital solutions
-          that drive growth and create meaningful user experiences.
-        </p>
-      </div>
-    </section>
+    <HeroSection
+      title="Our Services"
+      description="From concept to launch, we provide comprehensive digital solutions that drive growth and create meaningful user experiences."
+      background-image="/assets/img/hero-image.jpg"
+    />
 
     <!-- Services Grid -->
     <section class="px-6 pb-20">

@@ -1,17 +1,11 @@
 <template>
   <main class="bg-white">
     <!-- Hero Section -->
-    <section class="px-6 pt-32 pb-20">
-      <div class="container mx-auto text-center">
-        <h1 class="mb-6 text-5xl font-bold text-gray-900 md:text-7xl">
-          Ideas & Insights
-        </h1>
-        <p class="mx-auto mb-12 max-w-3xl text-xl text-gray-600">
-          Explore our latest thoughts on technology, design, and digital
-          innovation. Stay ahead with insights from our team of experts.
-        </p>
-      </div>
-    </section>
+    <HeroSection
+      title="Ideas & Insights"
+      description="Explore our latest thoughts on technology, design, and digital innovation. Stay ahead with insights from our team of experts."
+      background-image="/assets/img/hero-image.jpg"
+    />
 
     <!-- Featured Article -->
     <section class="px-6 pb-4">
@@ -78,7 +72,7 @@
             <div class="text-sm">
               Showing {{ start }} - {{ end }} of {{ total }}
             </div>
-            <div class="flex lg:flex-row gap-4 flex-col">
+            <div class="flex flex-col gap-4 lg:flex-row">
               <div class="flex items-center gap-2">
                 <span>Show per page:</span>
                 <div class="relative">
@@ -110,7 +104,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <span >Sort by:</span>
+                <span>Sort by:</span>
                 <div class="relative">
                   <select
                     v-model="selectedSort"

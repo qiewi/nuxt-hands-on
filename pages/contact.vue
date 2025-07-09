@@ -1,17 +1,11 @@
 <template>
   <main class="bg-white">
     <!-- Hero Section -->
-    <section class="px-6 pt-32 pb-20">
-      <div class="container mx-auto text-center">
-        <h1 class="mb-6 text-5xl font-bold text-gray-900 md:text-7xl">
-          Get in Touch
-        </h1>
-        <p class="mx-auto mb-12 max-w-3xl text-xl text-gray-600">
-          Ready to start your next project? We'd love to hear from you. Let's
-          discuss how we can help bring your ideas to life.
-        </p>
-      </div>
-    </section>
+    <HeroSection
+      title="Get in Touch"
+      description="Ready to start your next project? We'd love to hear from you. Let's discuss how we can help bring your ideas to life."
+      background-image="/assets/img/hero-image.jpg"
+    />
 
     <!-- Contact Form Section -->
     <section class="px-6 pb-20">

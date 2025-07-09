@@ -1,18 +1,11 @@
 <template>
   <main class="bg-white">
     <!-- Hero Section -->
-    <section class="px-6 pt-32 pb-20">
-      <div class="container mx-auto text-center">
-        <h1 class="mb-6 text-5xl font-bold text-gray-900 md:text-7xl">
-          Join Our Team
-        </h1>
-        <p class="mx-auto mb-12 max-w-3xl text-xl text-gray-600">
-          Build your career with a team of passionate innovators. We're always
-          looking for talented individuals who share our vision for creating
-          exceptional digital experiences.
-        </p>
-      </div>
-    </section>
+    <HeroSection
+      title="Join Our Team"
+      description="Build your career with a team of passionate innovators. We're always looking for talented individuals who share our vision for creating exceptional digital experiences."
+      background-image="/assets/img/hero-image.jpg"
+    />
 
     <!-- Culture Section -->
     <section class="bg-gray-50 px-6 py-20">

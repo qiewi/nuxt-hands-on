@@ -1,17 +1,11 @@
 <template>
   <main class="bg-white">
     <!-- Hero Section -->
-    <section class="px-6 pt-32 pb-20">
-      <div class="container mx-auto text-center">
-        <h1 class="mb-6 text-5xl font-bold text-gray-900 md:text-7xl">
-          Our Work
-        </h1>
-        <p class="mx-auto mb-12 max-w-3xl text-xl text-gray-600">
-          We create digital experiences that transform businesses and delight
-          users. Explore our portfolio of innovative solutions.
-        </p>
-      </div>
-    </section>
+    <HeroSection
+      title="Our Work"
+      description="We create digital experiences that transform businesses and delight users. Explore our portfolio of innovative solutions."
+      background-image="/assets/img/hero-image.jpg"
+    />
 
     <!-- Filter Section -->
     <section class="px-6 pb-12">
