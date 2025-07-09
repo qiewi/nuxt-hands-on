@@ -3,14 +3,13 @@ export default defineEventHandler(async event => {
 
   const page = String(query['page[number]'] || '1')
   const size = String(query['page[size]'] || '10')
-  const sort = String(query.sort || '-published_at')
   const append = query['append[]'] || []
 
   // Build the API URL
   const apiUrl = new URL('https://suitmedia-backend.suitdev.com/api/ideas')
   apiUrl.searchParams.set('page[number]', page)
   apiUrl.searchParams.set('page[size]', size)
-  apiUrl.searchParams.set('sort', sort)
+  // Note: sorting is now handled client-side
 
   // Handle append[] parameter (can be multiple)
   if (Array.isArray(append)) {

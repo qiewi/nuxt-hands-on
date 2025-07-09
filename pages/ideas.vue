@@ -81,24 +81,62 @@
             <div class="flex flex-row gap-4">
               <div class="flex items-center gap-2">
                 <span>Show per page:</span>
-                <select
-                  v-model="selectedShowPerPage"
-                  class="w-[120px] rounded-3xl border border-gray-300 px-3 py-2 text-sm focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
-                >
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                </select>
+                <div class="relative">
+                  <select
+                    v-model="selectedShowPerPage"
+                    class="w-[120px] appearance-none rounded-full border border-gray-300 bg-white px-4 py-2 pr-8 text-sm focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
+                  >
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                  </select>
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+                  >
+                    <svg
+                      class="h-4 w-4 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </div>
               </div>
               <div class="flex items-center gap-2">
                 <span>Sort by:</span>
-                <select
-                  v-model="selectedSort"
-                  class="w-[120px] rounded-3xl border border-gray-300 px-3 py-2 text-sm focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
-                >
-                  <option value="-published_at">Newest</option>
-                  <option value="published_at">Oldest</option>
-                </select>
+                <div class="relative">
+                  <select
+                    v-model="selectedSort"
+                    class="w-[120px] appearance-none rounded-full border border-gray-300 bg-white px-4 py-2 pr-8 text-sm focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
+                  >
+                    <option value="-published_at">Newest</option>
+                    <option value="published_at">Oldest</option>
+                  </select>
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+                  >
+                    <svg
+                      class="h-4 w-4 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -314,127 +352,28 @@ definePageMeta({
   name: 'ideas',
 })
 
-// Get URL parameters
-const route = useRoute()
-const router = useRouter()
-
-// Reactive state
-const currentPage = ref(Number(route.query.page) || 1)
-const selectedShowPerPage = ref(Number(route.query.size) || 10)
-const selectedSort = ref(route.query.sort || '-published_at')
-
-// Fetch data from API
+// Use the article composable
 const {
-  data: apiResponse,
+  // State
+  currentPage,
+  selectedShowPerPage,
+  selectedSort,
+
+  // API State
   pending,
   error,
-  refresh,
-} = await useAsyncData(
-  'ideas',
-  async () => {
-    const response = await $fetch('/api/app/pages/ideas', {
-      query: {
-        'page[number]': currentPage.value,
-        'page[size]': selectedShowPerPage.value,
-        sort: selectedSort.value,
-        'append[]': ['small_image', 'medium_image'],
-      },
-    })
-    return response
-  },
-  {
-    watch: [currentPage, selectedShowPerPage, selectedSort],
-  },
-)
 
-// Computed properties for data
-const articles = computed(() => apiResponse.value?.data || [])
-const total = computed(() => apiResponse.value?.meta?.total || 0)
-const totalPages = computed(() =>
-  Math.ceil(total.value / selectedShowPerPage.value),
-)
+  // Data
+  articles,
+  total,
+  totalPages,
+  start,
+  end,
+  paginationPages,
 
-// Pagination display info
-const start = computed(
-  () => (currentPage.value - 1) * selectedShowPerPage.value + 1,
-)
-const end = computed(() =>
-  Math.min(currentPage.value * selectedShowPerPage.value, total.value),
-)
-
-// Pagination logic matching React component
-const paginationPages = computed(() => {
-  const pages = []
-  const current = currentPage.value
-  const totalPagesCount = totalPages.value
-
-  if (totalPagesCount <= 5) {
-    // Show all pages if total is 5 or less
-    for (let i = 1; i <= totalPagesCount; i++) {
-      pages.push(i)
-    }
-  } else {
-    if (current <= 3) {
-      // Show first 4 pages + ellipsis + last page
-      pages.push(1, 2, 3, 4, '...', totalPagesCount)
-    } else if (current >= totalPagesCount - 2) {
-      // Show first page + ellipsis + last 4 pages
-      pages.push(
-        1,
-        '...',
-        totalPagesCount - 3,
-        totalPagesCount - 2,
-        totalPagesCount - 1,
-        totalPagesCount,
-      )
-    } else {
-      // Show first page + ellipsis + current-1, current, current+1 + ellipsis + last page
-      pages.push(
-        1,
-        '...',
-        current - 1,
-        current,
-        current + 1,
-        '...',
-        totalPagesCount,
-      )
-    }
-  }
-
-  return pages
-})
-
-// Navigation functions
-const updateUrl = params => {
-  const query = { ...route.query, ...params }
-  router.push({ query })
-}
-
-const goToPage = page => {
-  currentPage.value = page
-  updateUrl({ page })
-}
-
-// Watch for changes and update URL
-watch(selectedSort, newSort => {
-  updateUrl({ sort: newSort, page: 1 })
-  currentPage.value = 1
-})
-
-watch(selectedShowPerPage, newSize => {
-  updateUrl({ size: newSize, page: 1 })
-  currentPage.value = 1
-})
-
-// Update reactive state when URL changes
-watch(
-  () => route.query,
-  newQuery => {
-    currentPage.value = Number(newQuery.page) || 1
-    selectedShowPerPage.value = Number(newQuery.size) || 10
-    selectedSort.value = newQuery.sort || '-published_at'
-  },
-)
+  // Methods
+  goToPage,
+} = useArticle()
 
 // SEO
 useMeta({
