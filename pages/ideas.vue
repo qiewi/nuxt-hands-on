@@ -14,7 +14,7 @@
     </section>
 
     <!-- Featured Article -->
-    <section class="px-6 pb-20">
+    <section class="px-6 pb-4">
       <div class="container mx-auto">
         <div class="mb-16 rounded-lg bg-gray-50 p-8 lg:p-12">
           <div class="grid items-center gap-12 lg:grid-cols-2">
@@ -78,7 +78,7 @@
             <div class="text-sm">
               Showing {{ start }} - {{ end }} of {{ total }}
             </div>
-            <div class="flex flex-row gap-4">
+            <div class="flex lg:flex-row gap-4 flex-col">
               <div class="flex items-center gap-2">
                 <span>Show per page:</span>
                 <div class="relative">
@@ -110,7 +110,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <span>Sort by:</span>
+                <span >Sort by:</span>
                 <div class="relative">
                   <select
                     v-model="selectedSort"

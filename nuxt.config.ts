@@ -169,6 +169,14 @@ export default defineNuxtConfig({
   },
 
   fonts: {
+    families: [
+      {
+        name: 'Instrument Sans',
+        provider: 'google',
+        weights: [400, 500, 600, 700],
+        styles: ['normal', 'italic'],
+      },
+    ],
     defaults: {
       weights: [400],
       styles: ['normal', 'italic'],
