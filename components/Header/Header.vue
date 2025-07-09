@@ -101,8 +101,8 @@ const lastScroll = ref(0)
 const mobileMenuOpen = ref(false)
 
 const menuItems = [
-  { label: 'Work', path: '/work' },
   { label: 'About', path: '/about' },
+  { label: 'Work', path: '/work' },
   { label: 'Services', path: '/services' },
   { label: 'Ideas', path: '/ideas' },
   { label: 'Careers', path: '/careers' },
