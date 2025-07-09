@@ -13,27 +13,6 @@
       </div>
     </section>
 
-    <!-- Filter Section -->
-    <section class="px-6 pb-12">
-      <div class="container mx-auto">
-        <div class="mb-12 flex flex-wrap justify-center gap-4">
-          <button
-            v-for="category in categories"
-            :key="category"
-            :class="[
-              'rounded-full border-2 px-6 py-3 transition-all duration-300',
-              selectedCategory === category
-                ? 'border-[#FF6600] bg-[#FF6600] text-white'
-                : 'border-gray-300 bg-white text-gray-700 hover:border-[#FF6600]',
-            ]"
-            @click="selectedCategory = category"
-          >
-            {{ category }}
-          </button>
-        </div>
-      </div>
-    </section>
-
     <!-- Featured Article -->
     <section class="px-6 pb-20">
       <div class="container mx-auto">
@@ -77,15 +56,209 @@
       </div>
     </section>
 
-    <!-- Articles Grid -->
+    <!-- Articles Section -->
     <section class="px-6 pb-20">
-      <div class="container mx-auto">
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <CardsArticleCard
-            v-for="article in filteredArticles"
-            :key="article.id"
-            :article="article"
-          />
+      <div class="container mx-auto py-10">
+        <div v-if="pending" class="py-20 text-center">
+          <div
+            class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-[#FF6600]"
+          ></div>
+          <p class="mt-4 text-gray-600">Loading articles...</p>
+        </div>
+
+        <div v-else-if="error" class="py-20 text-center">
+          <p class="text-red-600">Error loading articles. Please try again.</p>
+        </div>
+
+        <div v-else>
+          <!-- Controls and Info -->
+          <div
+            class="mb-6 flex flex-col gap-4 text-black sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div class="text-sm">
+              Showing {{ start }} - {{ end }} of {{ total }}
+            </div>
+            <div class="flex flex-row gap-4">
+              <div class="flex items-center gap-2">
+                <span>Show per page:</span>
+                <select
+                  v-model="selectedShowPerPage"
+                  class="w-[120px] rounded-3xl border border-gray-300 px-3 py-2 text-sm focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-2">
+                <span>Sort by:</span>
+                <select
+                  v-model="selectedSort"
+                  class="w-[120px] rounded-3xl border border-gray-300 px-3 py-2 text-sm focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
+                >
+                  <option value="-published_at">Newest</option>
+                  <option value="published_at">Oldest</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Articles Grid -->
+          <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+            <CardsArticleCard
+              v-for="article in articles"
+              :key="article.id"
+              :article="article"
+            />
+          </div>
+
+          <!-- Pagination -->
+          <div v-if="totalPages > 1" class="mt-16 flex justify-center">
+            <div class="flex items-center gap-1">
+              <!-- First Page -->
+              <button
+                :disabled="currentPage === 1"
+                :class="[
+                  'flex h-8 w-8 items-center justify-center rounded transition-colors',
+                  currentPage === 1
+                    ? 'cursor-not-allowed opacity-50'
+                    : 'hover:bg-gray-100',
+                ]"
+                @click="goToPage(1)"
+                aria-label="First page"
+              >
+                <svg
+                  class="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+
+              <!-- Previous Page -->
+              <button
+                :disabled="currentPage === 1"
+                :class="[
+                  'flex h-8 w-8 items-center justify-center rounded transition-colors',
+                  currentPage === 1
+                    ? 'cursor-not-allowed opacity-50'
+                    : 'hover:bg-gray-100',
+                ]"
+                @click="goToPage(currentPage - 1)"
+                aria-label="Previous page"
+              >
+                <svg
+                  class="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+
+              <!-- Page Numbers -->
+              <template v-for="(page, idx) in paginationPages" :key="idx">
+                <span
+                  v-if="page === '...'"
+                  class="flex h-8 w-8 items-center justify-center text-gray-400 select-none"
+                >
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 12h.01M12 12h.01M19 12h.01"
+                    />
+                  </svg>
+                </span>
+                <button
+                  v-else
+                  :class="[
+                    'flex h-8 w-8 items-center justify-center rounded font-medium transition-colors',
+                    currentPage === page
+                      ? 'bg-[#FF6600] text-white'
+                      : 'border border-transparent bg-transparent text-black hover:bg-[#FF6600]/80 hover:text-white',
+                  ]"
+                  @click="goToPage(page)"
+                  :aria-current="currentPage === page ? 'page' : undefined"
+                >
+                  {{ page }}
+                </button>
+              </template>
+
+              <!-- Next Page -->
+              <button
+                :disabled="currentPage === totalPages"
+                :class="[
+                  'flex h-8 w-8 items-center justify-center rounded transition-colors',
+                  currentPage === totalPages
+                    ? 'cursor-not-allowed opacity-50'
+                    : 'hover:bg-gray-100',
+                ]"
+                @click="goToPage(currentPage + 1)"
+                aria-label="Next page"
+              >
+                <svg
+                  class="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+
+              <!-- Last Page -->
+              <button
+                :disabled="currentPage === totalPages"
+                :class="[
+                  'flex h-8 w-8 items-center justify-center rounded transition-colors',
+                  currentPage === totalPages
+                    ? 'cursor-not-allowed opacity-50'
+                    : 'hover:bg-gray-100',
+                ]"
+                @click="goToPage(totalPages)"
+                aria-label="Last page"
+              >
+                <svg
+                  class="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 5l7 7-7 7M5 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -141,91 +314,127 @@ definePageMeta({
   name: 'ideas',
 })
 
-const selectedCategory = ref('All')
+// Get URL parameters
+const route = useRoute()
+const router = useRouter()
 
-const categories = ['All', 'Technology', 'Design', 'Strategy', 'Industry News']
+// Reactive state
+const currentPage = ref(Number(route.query.page) || 1)
+const selectedShowPerPage = ref(Number(route.query.size) || 10)
+const selectedSort = ref(route.query.sort || '-published_at')
 
-const articles = [
-  {
-    id: 1,
-    title: 'Building Scalable React Applications',
-    excerpt:
-      'Learn best practices for structuring large React applications that can grow with your business needs.',
-    category: 'Technology',
-    date: 'Dec 10, 2023',
-    readTime: '8 min read',
+// Fetch data from API
+const {
+  data: apiResponse,
+  pending,
+  error,
+  refresh,
+} = await useAsyncData(
+  'ideas',
+  async () => {
+    const response = await $fetch('/api/app/pages/ideas', {
+      query: {
+        'page[number]': currentPage.value,
+        'page[size]': selectedShowPerPage.value,
+        sort: selectedSort.value,
+        'append[]': ['small_image', 'medium_image'],
+      },
+    })
+    return response
   },
   {
-    id: 2,
-    title: 'The Psychology of User Interface Design',
-    excerpt:
-      'Understanding how users interact with digital interfaces and designing for better user experiences.',
-    category: 'Design',
-    date: 'Dec 8, 2023',
-    readTime: '6 min read',
+    watch: [currentPage, selectedShowPerPage, selectedSort],
   },
-  {
-    id: 3,
-    title: 'Digital Transformation Strategy for SMEs',
-    excerpt:
-      'A comprehensive guide for small and medium enterprises looking to digitize their business processes.',
-    category: 'Strategy',
-    date: 'Dec 5, 2023',
-    readTime: '10 min read',
-  },
-  {
-    id: 4,
-    title: 'Mobile-First Design Principles',
-    excerpt:
-      'Why mobile-first approach is crucial in modern web development and how to implement it effectively.',
-    category: 'Design',
-    date: 'Dec 3, 2023',
-    readTime: '7 min read',
-  },
-  {
-    id: 5,
-    title: 'The Rise of AI in Web Development',
-    excerpt:
-      'Exploring how artificial intelligence is revolutionizing the way we build and maintain websites.',
-    category: 'Technology',
-    date: 'Dec 1, 2023',
-    readTime: '9 min read',
-  },
-  {
-    id: 6,
-    title: 'E-commerce Trends to Watch in 2024',
-    excerpt:
-      'Key trends that will shape the e-commerce landscape in the coming year and how to prepare for them.',
-    category: 'Industry News',
-    date: 'Nov 28, 2023',
-    readTime: '5 min read',
-  },
-  {
-    id: 7,
-    title: 'Effective API Design Patterns',
-    excerpt:
-      'Best practices for designing APIs that are easy to use, maintain, and scale for modern applications.',
-    category: 'Technology',
-    date: 'Nov 25, 2023',
-    readTime: '12 min read',
-  },
-  {
-    id: 8,
-    title: 'Color Theory in Digital Design',
-    excerpt:
-      'Understanding how colors affect user perception and behavior in digital interfaces.',
-    category: 'Design',
-    date: 'Nov 22, 2023',
-    readTime: '6 min read',
-  },
-]
+)
 
-const filteredArticles = computed(() => {
-  if (selectedCategory.value === 'All') {
-    return articles
+// Computed properties for data
+const articles = computed(() => apiResponse.value?.data || [])
+const total = computed(() => apiResponse.value?.meta?.total || 0)
+const totalPages = computed(() =>
+  Math.ceil(total.value / selectedShowPerPage.value),
+)
+
+// Pagination display info
+const start = computed(
+  () => (currentPage.value - 1) * selectedShowPerPage.value + 1,
+)
+const end = computed(() =>
+  Math.min(currentPage.value * selectedShowPerPage.value, total.value),
+)
+
+// Pagination logic matching React component
+const paginationPages = computed(() => {
+  const pages = []
+  const current = currentPage.value
+  const totalPagesCount = totalPages.value
+
+  if (totalPagesCount <= 5) {
+    // Show all pages if total is 5 or less
+    for (let i = 1; i <= totalPagesCount; i++) {
+      pages.push(i)
+    }
+  } else {
+    if (current <= 3) {
+      // Show first 4 pages + ellipsis + last page
+      pages.push(1, 2, 3, 4, '...', totalPagesCount)
+    } else if (current >= totalPagesCount - 2) {
+      // Show first page + ellipsis + last 4 pages
+      pages.push(
+        1,
+        '...',
+        totalPagesCount - 3,
+        totalPagesCount - 2,
+        totalPagesCount - 1,
+        totalPagesCount,
+      )
+    } else {
+      // Show first page + ellipsis + current-1, current, current+1 + ellipsis + last page
+      pages.push(
+        1,
+        '...',
+        current - 1,
+        current,
+        current + 1,
+        '...',
+        totalPagesCount,
+      )
+    }
   }
-  return articles.filter(article => article.category === selectedCategory.value)
+
+  return pages
 })
+
+// Navigation functions
+const updateUrl = params => {
+  const query = { ...route.query, ...params }
+  router.push({ query })
+}
+
+const goToPage = page => {
+  currentPage.value = page
+  updateUrl({ page })
+}
+
+// Watch for changes and update URL
+watch(selectedSort, newSort => {
+  updateUrl({ sort: newSort, page: 1 })
+  currentPage.value = 1
+})
+
+watch(selectedShowPerPage, newSize => {
+  updateUrl({ size: newSize, page: 1 })
+  currentPage.value = 1
+})
+
+// Update reactive state when URL changes
+watch(
+  () => route.query,
+  newQuery => {
+    currentPage.value = Number(newQuery.page) || 1
+    selectedShowPerPage.value = Number(newQuery.size) || 10
+    selectedSort.value = newQuery.sort || '-published_at'
+  },
+)
 
 // SEO
 useMeta({

@@ -12,7 +12,7 @@
       <span
         class="inline-block rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
       >
-        {{ article.category }}
+        {{ randomCategory }}
       </span>
     </div>
 
@@ -22,17 +22,17 @@
       {{ article.title }}
     </h3>
 
-    <p class="mb-4 line-clamp-3 text-gray-600">{{ article.excerpt }}</p>
+    <p class="mb-4 line-clamp-3 text-gray-600">{{ staticExcerpt }}</p>
 
     <div class="flex items-center justify-between text-sm text-gray-500">
-      <span>{{ article.date }}</span>
-      <span>{{ article.readTime }}</span>
+      <span>{{ formattedDate }}</span>
+      <span>6 min read</span>
     </div>
   </article>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   article: {
     type: Object,
     required: true,
@@ -41,12 +41,44 @@ defineProps({
         value &&
         typeof value.id !== 'undefined' &&
         typeof value.title === 'string' &&
-        typeof value.excerpt === 'string' &&
-        typeof value.category === 'string' &&
-        typeof value.date === 'string' &&
-        typeof value.readTime === 'string'
+        typeof value.published_at === 'string'
       )
     },
   },
+})
+
+// Static categories
+const categories = ['Technology', 'Design', 'Strategy']
+
+// Generate random category based on article id for consistency
+const randomCategory = computed(() => {
+  const index = parseInt(props.article.id) % categories.length
+  return categories[index]
+})
+
+// Static excerpts based on category
+const excerpts = {
+  Technology:
+    'Exploring the latest technological innovations and their impact on modern web development and digital solutions.',
+  Design:
+    'Understanding design principles and user experience strategies that create engaging and intuitive digital interfaces.',
+  Strategy:
+    'Strategic insights for businesses looking to leverage digital transformation and optimize their online presence.',
+}
+
+const staticExcerpt = computed(() => {
+  return excerpts[randomCategory.value]
+})
+
+// Format date from API response
+const formattedDate = computed(() => {
+  if (!props.article.published_at) return ''
+
+  const date = new Date(props.article.published_at)
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
 })
 </script>
