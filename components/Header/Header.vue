@@ -2,9 +2,12 @@
   <header
     :class="[
       'fixed top-0 left-0 z-50 w-full transition-all duration-500',
-      show ? 'translate-y-0' : '-translate-y-full',
-      isAtTop ? 'bg-[#FF6600]' : 'bg-[#FF6600]/80',
-      'shadow-sm backdrop-blur-md',
+      mobileMenuOpen
+        ? 'bg-[#FF6600]'
+        : isAtTop
+          ? 'bg-transparent'
+          : 'bg-[#FF6600]',
+      'md:' + (show ? 'translate-y-0' : '-translate-y-full'),
     ]"
     :style="{ willChange: 'transform' }"
   >
@@ -66,7 +69,7 @@
     <!-- Mobile Menu -->
     <div
       :class="[
-        'absolute top-full left-0 w-full overflow-hidden bg-[#FF6600] transition-all duration-300 md:hidden',
+        'absolute top-full left-0 w-full overflow-hidden bg-white transition-all duration-300 md:hidden',
         mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0',
       ]"
     >
@@ -75,9 +78,9 @@
           v-for="item in menuItems"
           :key="item.path"
           :class="[
-            'px-6 py-3 font-medium text-white transition-all duration-200 hover:bg-[#FF6600]/20',
+            'px-6 py-3 font-medium text-[#FF6600] transition-all duration-200 hover:bg-gray-100',
             route.path === item.path
-              ? 'border-l-4 border-white bg-[#FF6600]/30'
+              ? 'border-l-4 border-[#FF6600] bg-gray-50'
               : '',
           ]"
         >
@@ -129,10 +132,16 @@ const handleScroll = () => {
     return
   }
 
-  if (currentScroll > lastScroll.value) {
-    show.value = false // Hide on scroll down
+  // Only hide/show header on desktop (md and up)
+  // On mobile, header always stays visible
+  if (window.innerWidth >= 768) {
+    if (currentScroll > lastScroll.value) {
+      show.value = false // Hide on scroll down
+    } else {
+      show.value = true // Show on scroll up
+    }
   } else {
-    show.value = true // Show on scroll up
+    show.value = true // Always show on mobile
   }
 
   lastScroll.value = currentScroll
