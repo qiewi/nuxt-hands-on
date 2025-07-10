@@ -12,11 +12,14 @@
       <div class="container mx-auto">
         <div class="mb-16 rounded-lg bg-gray-50 p-8 lg:p-12">
           <div class="grid items-center gap-12 lg:grid-cols-2">
-            <div
-              class="order-1 flex aspect-video items-center justify-center rounded-lg bg-gray-200 lg:order-2"
-            >
-              <span class="text-lg text-gray-500">Featured Article Image</span>
-            </div>
+            <nuxt-img
+              src="/assets/img/article-image.jpg"
+              alt="Featured Article - The Future of Web Development in 2024"
+              class="order-1 aspect-video rounded-lg object-cover lg:order-2"
+              width="600"
+              height="338"
+              quality="90"
+            />
             <div class="order-2 lg:order-1">
               <span
                 class="mb-4 inline-block rounded-full bg-[#FF6600] px-3 py-1 text-sm font-medium text-white"

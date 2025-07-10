@@ -152,48 +152,6 @@
       </div>
     </section>
 
-    <!-- Application Process -->
-    <section class="px-6 py-20">
-      <div class="container mx-auto">
-        <div class="mb-16 text-center">
-          <h2 class="mb-6 text-4xl font-bold text-gray-900">
-            Application Process
-          </h2>
-          <p class="mx-auto max-w-2xl text-xl text-gray-600">
-            Our hiring process is designed to be fair, efficient, and give you
-            the best opportunity to showcase your skills.
-          </p>
-        </div>
-
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div
-            v-for="(step, index) in applicationProcess"
-            :key="step.title"
-            class="text-center"
-          >
-            <div class="relative mb-6">
-              <div
-                class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#FF6600]"
-              >
-                <span class="text-xl font-bold text-white">{{
-                  index + 1
-                }}</span>
-              </div>
-              <div
-                v-if="index < applicationProcess.length - 1"
-                class="absolute top-8 left-1/2 hidden h-0.5 w-full bg-gray-300 lg:block"
-                style="transform: translateX(50%)"
-              ></div>
-            </div>
-            <h3 class="mb-3 text-xl font-semibold text-gray-900">
-              {{ step.title }}
-            </h3>
-            <p class="text-gray-600">{{ step.description }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- CTA Section -->
     <section class="bg-[#FF6600] px-6 py-20">
       <div class="container mx-auto text-center">

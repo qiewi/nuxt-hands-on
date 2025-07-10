@@ -228,16 +228,18 @@
           and see how we can help you achieve your goals.
         </p>
         <div class="flex flex-col justify-center gap-4 sm:flex-row">
-          <button
-            class="rounded-lg bg-[#FF6600] px-8 py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#e55a00]"
+          <NuxtLink
+            to="/contact"
+            class="inline-block rounded-lg bg-[#FF6600] px-8 py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#e55a00]"
           >
             Schedule a Call
-          </button>
-          <button
-            class="rounded-lg border-2 border-[#FF6600] px-8 py-4 font-semibold text-[#FF6600] transition-colors duration-300 hover:bg-[#FF6600] hover:text-white"
+          </NuxtLink>
+          <NuxtLink
+            to="/work"
+            class="inline-block rounded-lg border-2 border-[#FF6600] px-8 py-4 font-semibold text-[#FF6600] transition-colors duration-300 hover:bg-[#FF6600] hover:text-white"
           >
             View Our Work
-          </button>
+          </NuxtLink>
         </div>
       </div>
     </section>
@@ -255,12 +257,7 @@ const contactInfo = [
   {
     icon: '📧',
     title: 'Email',
-    details: ['hello@suitmedia.com', 'We respond within 24 hours'],
-  },
-  {
-    icon: '📱',
-    title: 'Phone',
-    details: ['+62 21 719 6877', 'Mon-Fri 9AM-6PM (GMT+7)'],
+    details: ['contact@suitmedia.com', 'We respond within 24 hours'],
   },
   {
     icon: '💬',
@@ -279,20 +276,15 @@ const contactInfo = [
 
 const offices = [
   {
-    city: 'Jakarta (Headquarters)',
+    city: 'Jakarta (Head Office)',
     address: [
-      'Jl. Pejaten Barat II No. 3A',
-      'Pasar Minggu, Jakarta Selatan',
-      'Jakarta 12510, Indonesia',
+      'Jl. Pekayon 1 No.26, Ps. Minggu, Jakarta',
+      'Selatan, DKI Jakarta, Indonesia 12540',
     ],
   },
   {
     city: 'Bandung',
-    address: [
-      'Jl. Buah Batu No. 45',
-      'Bandung, Jawa Barat',
-      'Bandung 40264, Indonesia',
-    ],
+    address: ['Jl. Sekeloa No.2, Dipatiukur, Bandung,', 'Indonesia 40132'],
   },
 ]
 
